@@ -1,25 +1,301 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Анимация логотипа</title>
-    <style>
-        body {
-            margin: 0;
-            background: black;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
-        video {
-            max-width: 100%;
-            max-height: 100vh;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Анимация логотипа | Neonglow</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #0b0b0b;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      padding: 16px;
+    }
+
+    /* Адаптивный контейнер — точь-в-точь как видео */
+    .logo-stage {
+      position: relative;
+      width: 100%;
+      max-width: 800px;        /* как у видео в примере (можно менять) */
+      aspect-ratio: 16 / 9;    /* классическое соотношение, под видео */
+      background: radial-gradient(circle at 30% 40%, #1a1a2e, #0a0a0f);
+      border-radius: 28px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.03);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      transition: box-shadow 0.3s ease;
+    }
+
+    .logo-stage:hover {
+      box-shadow: 0 24px 48px rgba(0, 20, 40, 0.9), 0 0 0 1px rgba(120, 180, 255, 0.15);
+    }
+
+    /* Анимационный слой — всё внутри */
+    .logo-animation {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* Группа логотипа (буквы + акценты) */
+    .logo-group {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.25em;
+      transform: scale(0.9);
+      animation: floatGlow 4s ease-in-out infinite alternate;
+    }
+
+    /* каждая буква — отдельный блок с анимацией */
+    .letter {
+      font-size: clamp(3.2rem, 15vw, 6.5rem);
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: #e0f0ff;
+      text-shadow: 0 0 8px rgba(0, 180, 255, 0.4), 0 0 20px rgba(0, 120, 255, 0.2);
+      transition: transform 0.2s ease;
+      animation: letterPulse 3.2s ease-in-out infinite alternate;
+      will-change: transform, text-shadow;
+      font-family: 'Segoe UI', 'Arial Black', system-ui, sans-serif;
+    }
+
+    /* разные задержки для каждой буквы — живая последовательность */
+    .letter:nth-child(1) { animation-delay: 0.0s; }
+    .letter:nth-child(2) { animation-delay: 0.15s; }
+    .letter:nth-child(3) { animation-delay: 0.30s; }
+    .letter:nth-child(4) { animation-delay: 0.45s; }
+    .letter:nth-child(5) { animation-delay: 0.60s; }
+    .letter:nth-child(6) { animation-delay: 0.75s; }
+    .letter:nth-child(7) { animation-delay: 0.90s; }
+
+    /* спец. стиль для точки / акцента */
+    .letter-dot {
+      font-size: clamp(3.2rem, 15vw, 6.5rem);
+      font-weight: 700;
+      color: #80d4ff;
+      text-shadow: 0 0 20px #00a6ff, 0 0 40px #0077ff;
+      animation: dotGlow 2.6s ease-in-out infinite alternate;
+      margin-left: 0.05em;
+      line-height: 1;
+    }
+
+    /* Пульсирующая подсветка у букв */
+    @keyframes letterPulse {
+      0% {
+        text-shadow: 0 0 6px rgba(0, 160, 255, 0.3), 0 0 20px rgba(0, 100, 255, 0.1);
+        transform: translateY(0px) scale(1);
+        color: #d0eaff;
+      }
+      100% {
+        text-shadow: 0 0 18px #00a6ff, 0 0 50px #0066ff, 0 0 80px #003cff;
+        transform: translateY(-6px) scale(1.04);
+        color: #ffffff;
+      }
+    }
+
+    /* точка мерцает ярче и меняет цвет */
+    @keyframes dotGlow {
+      0% {
+        text-shadow: 0 0 10px #0088ff, 0 0 30px #0044ff;
+        color: #66ccff;
+        transform: scale(1) rotate(0deg);
+      }
+      100% {
+        text-shadow: 0 0 30px #00ddff, 0 0 80px #0066ff, 0 0 120px #0022ff;
+        color: #b3e6ff;
+        transform: scale(1.3) rotate(6deg);
+      }
+    }
+
+    /* общее покачивание группы — как дыхание */
+    @keyframes floatGlow {
+      0% {
+        transform: scale(0.94) translateY(0px);
+        filter: drop-shadow(0 0 10px rgba(0, 100, 255, 0.2));
+      }
+      100% {
+        transform: scale(1.0) translateY(-10px);
+        filter: drop-shadow(0 0 35px rgba(0, 160, 255, 0.5));
+      }
+    }
+
+    /* плавающие «звёзды» / частицы на заднем плане — создают объём */
+    .particle {
+      position: absolute;
+      border-radius: 50%;
+      background: radial-gradient(circle, #a0d0ff, #0050aa);
+      opacity: 0.2;
+      animation: particleDrift 7s infinite alternate ease-in-out;
+      pointer-events: none;
+      box-shadow: 0 0 20px #0088ff;
+    }
+
+    .particle:nth-child(1) {
+      width: 20px;
+      height: 20px;
+      top: 15%;
+      left: 8%;
+      animation-duration: 9s;
+      opacity: 0.15;
+    }
+    .particle:nth-child(2) {
+      width: 12px;
+      height: 12px;
+      bottom: 20%;
+      right: 10%;
+      animation-duration: 11s;
+      opacity: 0.25;
+    }
+    .particle:nth-child(3) {
+      width: 28px;
+      height: 28px;
+      top: 65%;
+      left: 75%;
+      animation-duration: 8s;
+      opacity: 0.1;
+    }
+    .particle:nth-child(4) {
+      width: 8px;
+      height: 8px;
+      top: 30%;
+      right: 25%;
+      animation-duration: 13s;
+      opacity: 0.3;
+      background: #66ddff;
+    }
+    .particle:nth-child(5) {
+      width: 16px;
+      height: 16px;
+      bottom: 10%;
+      left: 20%;
+      animation-duration: 10s;
+      opacity: 0.18;
+      background: #88bbff;
+    }
+    .particle:nth-child(6) {
+      width: 10px;
+      height: 10px;
+      top: 10%;
+      left: 60%;
+      animation-duration: 12s;
+      opacity: 0.2;
+      background: #bbddff;
+    }
+
+    @keyframes particleDrift {
+      0% {
+        transform: translate(0, 0) scale(0.6);
+        opacity: 0.1;
+      }
+      100% {
+        transform: translate(30px, -40px) scale(1.4);
+        opacity: 0.5;
+      }
+    }
+
+    /* декоративный световой блик поверх */
+    .glow-ring {
+      position: absolute;
+      width: 70%;
+      height: 70%;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, rgba(0, 150, 255, 0.08), transparent 70%);
+      filter: blur(40px);
+      pointer-events: none;
+      animation: ringRotate 18s linear infinite;
+      mix-blend-mode: screen;
+    }
+
+    @keyframes ringRotate {
+      0% { transform: rotate(0deg) scale(1); opacity: 0.5; }
+      50% { transform: rotate(180deg) scale(1.2); opacity: 0.9; }
+      100% { transform: rotate(360deg) scale(1); opacity: 0.5; }
+    }
+
+    /* Вторая кольцевая дымка */
+    .glow-ring-2 {
+      position: absolute;
+      width: 50%;
+      height: 50%;
+      border-radius: 50%;
+      background: radial-gradient(circle at 70% 70%, rgba(0, 80, 200, 0.12), transparent 70%);
+      filter: blur(50px);
+      pointer-events: none;
+      animation: ringRotate 22s linear infinite reverse;
+      mix-blend-mode: screen;
+    }
+
+    /* Адаптив: на маленьких экранах буквы чуть меньше, но стиль сохраняется */
+    @media (max-width: 480px) {
+      .logo-stage {
+        border-radius: 20px;
+        max-width: 100%;
+      }
+      .letter {
+        font-size: clamp(2.6rem, 14vw, 4rem);
+      }
+      .letter-dot {
+        font-size: clamp(2.6rem, 14vw, 4rem);
+      }
+      .logo-group {
+        gap: 0.1em;
+        transform: scale(0.8);
+      }
+    }
+
+    /* совсем крошечные экраны */
+    @media (max-width: 360px) {
+      .logo-group {
+        gap: 0.05em;
+        transform: scale(0.7);
+      }
+    }
+  </style>
 </head>
 <body>
-    <video src="анимация лого 1.mp4" autoplay muted loop playsinline></video>
+  <div class="logo-stage">
+    <div class="logo-animation">
+      <!-- частицы (звёздная пыль) -->
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+
+      <!-- световые кольца -->
+      <div class="glow-ring"></div>
+      <div class="glow-ring-2"></div>
+
+      <!-- сам логотип: слово + точка -->
+      <div class="logo-group">
+        <span class="letter">L</span>
+        <span class="letter">O</span>
+        <span class="letter">G</span>
+        <span class="letter">O</span>
+        <span class="letter">S</span>
+        <span class="letter">T</span>
+        <span class="letter">A</span>
+        <span class="letter-dot">✦</span>
+        <!-- можно заменить на точку, но звёздочка смотрится эффектнее -->
+      </div>
+    </div>
+  </div>
 </body>
 </html>
